@@ -26,7 +26,6 @@ public class CreateEntityTest {
 
         id = given()
                 .spec(requestSpecification)
-                .contentType(ContentType.JSON)
                 .body(entity)
                 .when()
                 .post("/api/create")

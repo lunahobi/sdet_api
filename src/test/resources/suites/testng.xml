@@ -4,6 +4,7 @@
     <test name="Tests">
         <classes>
             <class name="tests.CreateEntityTest"/>
+            <class name="tests.GetEntityTest"/>
         </classes>
     </test>
 </suite>

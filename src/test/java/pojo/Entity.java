@@ -1,18 +1,22 @@
 package pojo;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Entity {
     private int id;
 
     @Builder.Default
     private Addition addition = Addition.builder().build();
 
-    @SerializedName("important_numbers")
+    @JsonProperty("important_numbers")
     @Builder.Default
     private List<Integer> importantNumbers = List.of(42, 87, 15);
 
@@ -24,14 +28,15 @@ public class Entity {
 
     @Data
     @Builder
+    @AllArgsConstructor @NoArgsConstructor
     public static class Addition {
         private int id;
 
-        @SerializedName("additional_info")
+        @JsonProperty("additional_info")
         @Builder.Default
         private String additionalInfo = "Дополнительные сведения";
 
-        @SerializedName("additional_number")
+        @JsonProperty("additional_number")
         @Builder.Default
         private int additionalNumber = 123;
     }
