@@ -42,7 +42,7 @@ jobs:
           # Ожидание готовности API через внешний curl (с хоста)
           echo "Waiting for API to become healthy..."
           for i in {1..10}; do
-          if curl -sSf http://localhost:8080/getAll >/dev/null; then
+          if curl -sSf http://localhost:8080/api/getAll >/dev/null; then
           echo "API is ready!"
           break
           else
