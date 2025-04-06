@@ -11,28 +11,29 @@ jobs:
       - name: Checkout main repository
         uses: actions/checkout@v3
         with:
-            repository: 'bondarenkokate73/simbirsoft_sdet_project'
-            token: ${{ secrets.GITHUB_TOKEN }}
+          repository: 'bondarenkokate73/simbirsoft_sdet_project'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Docker (with conflict resolution)
+      - name: Set up Docker
         run: |
+          # Установка зависимостей
           sudo apt-get update
-          # Удаляем конфликтующие пакеты, если они есть
-          sudo apt-get remove -y containerd || true
-          # Устанавливаем Docker с явным указанием версии containerd.io
-          sudo apt-get install -y \
-            ca-certificates \
-            curl \
-              gnupg \
-              lsb-release
+          sudo apt-get install -y ca-certificates curl gnupg lsb-release
+          
+          # Добавление официального репозитория Docker
           sudo mkdir -p /etc/apt/keyrings
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
           echo \
             "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
             $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          
+          # Установка Docker
           sudo apt-get update
-          sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-          sudo systemctl start docker
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          
+          # Проверка установки
+          sudo docker version
+          sudo docker compose version
 
       - name: Build and run Docker containers
         run: |
