@@ -1,7 +1,6 @@
 package tests;
 
 import helpers.BaseRequests;
-import io.restassured.mapper.ObjectMapperType;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.SoftAssertions;
@@ -35,7 +34,7 @@ public class GetEntityTest {
                 .statusCode(200)
                 .body(notNullValue())
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("jsonSchemas/GetEntityResponseSchema.json"))
-                .extract().as(Entity.class, ObjectMapperType.GSON);
+                .extract().as(Entity.class);
 
         SoftAssert softAssertion = new SoftAssert();
         softAssertion.assertEquals(entity.getId(), 1);

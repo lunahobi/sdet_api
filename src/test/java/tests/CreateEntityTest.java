@@ -1,7 +1,6 @@
 package tests;
 
 import helpers.BaseRequests;
-import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
