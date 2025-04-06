@@ -9,7 +9,7 @@ jobs:
     services:
       # Контейнер с вашим API
       simbirsoft-api:
-        image: bondarenkokate73/simbirsoft-api:latest
+        image: bondarenkokate73/simbirsoft_sdet_project@master
         ports:
           - "8080:8080"
         env:
