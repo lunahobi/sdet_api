@@ -26,7 +26,7 @@ public class GetEntityTest {
     public void setUp() {
         requestSpecification = BaseRequests.initRequestSpecification();
         id = BaseRequests.createEntity(requestSpecification);
-        id_2 = BaseRequests.createEntity(requestSpecification); //сущность для пр
+        id_2 = BaseRequests.createEntity(requestSpecification); //сущность для проверки /api/getAll
     }
 
     @Test(description = "GET: Получение сущности")

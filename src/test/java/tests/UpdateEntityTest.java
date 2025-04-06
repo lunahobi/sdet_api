@@ -11,7 +11,6 @@ import pojo.Entity;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.requestSpecification;
 import static org.hamcrest.Matchers.emptyString;
 
 public class UpdateEntityTest {
