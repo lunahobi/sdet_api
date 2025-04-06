@@ -11,17 +11,17 @@ import pojo.Entity;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.requestSpecification;
 import static org.hamcrest.Matchers.emptyString;
 
 public class UpdateEntityTest {
     private RequestSpecification requestSpecification;
-    private static String id = "1";
-    private static Entity originalEntity;
+    private static String id;
 
     @BeforeClass
     public void setUp() {
         requestSpecification = BaseRequests.initRequestSpecification();
-        originalEntity = BaseRequests.getEntityById(id);
+        id = BaseRequests.createEntity(requestSpecification);
     }
 
     @Test(description = "PATCH: Обновление сущности и её дополнений")
@@ -60,6 +60,6 @@ public class UpdateEntityTest {
 
     @AfterClass
     public void tearDown() {
-        BaseRequests.updateEntityById(originalEntity, requestSpecification);
+        BaseRequests.deleteEntityById(id);
     }
 }

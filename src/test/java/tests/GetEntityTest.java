@@ -1,7 +1,10 @@
 package tests;
 
+import helpers.BaseRequests;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import org.assertj.core.api.SoftAssertions;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pojo.Entity;
@@ -11,15 +14,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.requestSpecification;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class GetEntityTest {
+
+    private String id;
+    private String id_2;
+
+    @BeforeClass
+    public void setUp() {
+        requestSpecification = BaseRequests.initRequestSpecification();
+        id = BaseRequests.createEntity(requestSpecification);
+        id_2 = BaseRequests.createEntity(requestSpecification); //сущность для пр
+    }
 
     @Test(description = "GET: Получение сущности")
     public void testGetEntity(){
         Entity entity = given()
                 .when()
-                .get("/api/get/1")
+                .get("/api/get/" + id)
                 .then()
                 .statusCode(200)
                 .body(notNullValue())
@@ -27,10 +41,10 @@ public class GetEntityTest {
                 .extract().as(Entity.class);
 
         SoftAssert softAssertion = new SoftAssert();
-        softAssertion.assertEquals(entity.getId(), 1);
-        softAssertion.assertEquals(entity.getTitle(), "Новая сущность");
+        softAssertion.assertEquals(entity.getId(), Integer.parseInt(id));
+        softAssertion.assertEquals(entity.getTitle(), "Заголовок сущности");
         softAssertion.assertEquals(entity.isVerified(), true);
-        softAssertion.assertEquals(entity.getAddition().getId(), 1);
+        softAssertion.assertEquals(entity.getAddition().getId(), Integer.parseInt(id));
         softAssertion.assertEquals(entity.getAddition().getAdditionalInfo(), "Дополнительные сведения");
         softAssertion.assertEquals(entity.getAddition().getAdditionalNumber(), 123);
         softAssertion.assertEquals(entity.getImportantNumbers(), List.of(42, 87, 15));
@@ -75,4 +89,11 @@ public class GetEntityTest {
 
         softAssertion.assertAll();
     }
+
+    @AfterClass
+    public void tearDown(){
+        BaseRequests.deleteEntityById(id);
+        BaseRequests.deleteEntityById(id_2);
+    }
+
 }

@@ -57,21 +57,10 @@ public class BaseRequests {
     }
 
     /**
-     * Обновить сущность с заданным id
-     *
-     * @param entity сущность, которую необходимо обновить
+     * Создание сущности
+     * @param requestSpecification
+     * @return id созданной сущности
      */
-    public static void updateEntityById(Entity entity, RequestSpecification requestSpecification) {
-        given()
-                .spec(requestSpecification)
-                .body(entity)
-                .when()
-                .patch("/api/patch/" + entity.getId())
-                .then()
-                .statusCode(204)
-                .body(emptyString());
-    }
-
     public static String createEntity(RequestSpecification requestSpecification){
         Entity entity = Entity.builder().build();
         return given()
