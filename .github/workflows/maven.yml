@@ -37,7 +37,7 @@ jobs:
 
       - name: Build and run Docker containers
         run: |
-          docker-compose up --build -d
+          docker compose up --build -d
           sleep 15
 
       - name: "Использование ветки main репозитория"
