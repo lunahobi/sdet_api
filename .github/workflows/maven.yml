@@ -1,0 +1,83 @@
+name: Run Tests with Docker API
+
+on:
+  push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      # Контейнер с вашим API
+      simbirsoft-api:
+        image: bondarenkokate73/simbirsoft-api:latest
+        ports:
+          - "8080:8080"
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/simbirsoft
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: postgres
+        options: >-
+          --health-cmd="curl -f http://localhost:8080/api/health || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      # Контейнер с PostgreSQL
+      postgres:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: simbirsoft
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd="pg_isready -U postgres -d simbirsoft"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Wait for API to be ready
+        run: |
+          echo "Waiting for API to start..."
+          timeout 180 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:8080/api/health)" != "200" ]]; do
+            sleep 5
+          done'
+          echo "API is ready!"
+
+      - name: Run tests
+        run: |
+          mvn clean test \
+            -Dapi.base.url=http://localhost:8080 \
+            -Dspring.datasource.url=jdbc:postgresql://localhost:5432/simbirsoft \
+            -Dspring.datasource.username=postgres \
+            -Dspring.datasource.password=postgres
+        env:
+          TEST_ENV: ci
+
+      - name: Generate Allure report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: target/allure-results
+          gh_pages: gh-pages
+          allure_report: target/allure-report
+          allure_history: target/allure-history
+
+      - name: Upload Allure report
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: target/allure-history
