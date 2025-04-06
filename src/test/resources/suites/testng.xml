@@ -6,6 +6,7 @@
             <class name="tests.CreateEntityTest"/>
             <class name="tests.GetEntityTest"/>
             <class name="tests.UpdateEntityTest"/>
+            <class name="tests.DeleteEntityTest"/>
         </classes>
     </test>
 </suite>

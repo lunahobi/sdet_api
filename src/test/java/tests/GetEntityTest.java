@@ -1,10 +1,7 @@
 package tests;
 
-import helpers.BaseRequests;
 import io.restassured.module.jsv.JsonSchemaValidator;
-import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.SoftAssertions;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pojo.Entity;
@@ -17,17 +14,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class GetEntityTest {
-    private RequestSpecification requestSpecification;
-
-    @BeforeClass
-    public void setUp(){
-        requestSpecification = BaseRequests.initRequestSpecification();
-    }
 
     @Test(description = "GET: Получение сущности")
     public void testGetEntity(){
         Entity entity = given()
-                .spec(requestSpecification)
                 .when()
                 .get("/api/get/1")
                 .then()
@@ -50,7 +40,6 @@ public class GetEntityTest {
     @Test(description = "GET: Получение всех сущностей")
     public void testGetAllEntities(){
         List<Entity> entities = given()
-                .spec(requestSpecification)
                 .when()
                 .get("/api/getAll")
                 .then()

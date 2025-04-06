@@ -60,6 +60,6 @@ public class UpdateEntityTest {
 
     @AfterClass
     public void tearDown() {
-        BaseRequests.updateEntityById(id, originalEntity);
+        BaseRequests.updateEntityById(originalEntity, requestSpecification);
     }
 }
