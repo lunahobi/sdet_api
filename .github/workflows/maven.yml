@@ -52,7 +52,7 @@ jobs:
           done
           
           # Если после 10 попыток сервис не готов - выводим логи
-          if ! curl -sSf http://localhost:8080/health >/dev/null; then
+          if ! curl -sSf http://localhost:8080/api/getAll >/dev/null; then
           echo "Service failed to start. Logs:"
           docker compose logs service
           exit 1
