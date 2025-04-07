@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "entity": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "addition": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "additional_info": {
+                "type": "string"
+              },
+              "additional_number": {
+                "type": "integer"
+              }
+            },
+            "required": ["id"]
+          },
+          "important_numbers": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "required": ["id", "title", "verified", "addition"]
+      }
+    }
+  },
+  "required": ["entity"]
+}
