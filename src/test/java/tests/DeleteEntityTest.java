@@ -1,21 +1,12 @@
 package tests;
 
-import helpers.BaseRequests;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
-
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.requestSpecification;
 import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.equalTo;
 
-public class DeleteEntityTest {
-    private String id;
-
-    @BeforeClass
-    public void setUp() {
-        requestSpecification = BaseRequests.initRequestSpecification();
-        id = BaseRequests.createEntity(requestSpecification);
-    }
+public class DeleteEntityTest extends BaseTest{
 
     @Test(description = "DELETE: Удаление сущности")
     public void testDeleteEntity() {
@@ -25,5 +16,16 @@ public class DeleteEntityTest {
                 .then()
                 .statusCode(204)
                 .body(emptyString());
+
+        given()
+                .when()
+                .get("/api/get/" + id)
+                .then()
+                .statusCode(500)
+                .body("error", equalTo("no rows in result set"));
+    }
+
+    @AfterClass
+    public void tearDown(){
     }
 }

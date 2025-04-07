@@ -5,6 +5,7 @@
         <classes>
             <class name="tests.CreateEntityTest"/>
             <class name="tests.GetEntityTest"/>
+            <class name="tests.GetAllEntitiesTest"/>
             <class name="tests.UpdateEntityTest"/>
             <class name="tests.DeleteEntityTest"/>
         </classes>

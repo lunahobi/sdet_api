@@ -1,5 +1,6 @@
 package helpers;
 
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
@@ -31,6 +32,7 @@ public class BaseRequests {
      *
      * @param id id сущности, которое необходимо удалить
      */
+    @Step("Удалить сущность с id {id}")
     public static void deleteEntityById(String id) {
         given()
                 .when()
@@ -46,6 +48,7 @@ public class BaseRequests {
      * @param id id сущности, которое необходимо получить
      * @return сущность
      */
+    @Step("Получить сущность с id {id}")
     public static Entity getEntityById(String id) {
         return given()
                 .when()
@@ -61,6 +64,7 @@ public class BaseRequests {
      * @param requestSpecification
      * @return id созданной сущности
      */
+    @Step("Создать новую сущность")
     public static String createEntity(RequestSpecification requestSpecification){
         Entity entity = Entity.builder().build();
         return given()
